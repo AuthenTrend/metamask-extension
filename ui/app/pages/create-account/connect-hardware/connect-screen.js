@@ -58,12 +58,32 @@ class ConnectScreen extends Component {
     )
   }
 
+  renderConnectToAuthentrendButton () {
+    return (
+      <button
+        className={classnames('hw-connect__btn', {
+          'selected': this.state.selectedDevice === 'authentrend',
+        })}
+        onClick={_ => this.setState({ selectedDevice: 'authentrend' })}
+      >
+        <img
+          className="hw-connect__btn__img"
+          src="images/atwallet-logo.svg"
+          alt=""
+        />
+      </button>
+    )
+  }
+
   renderButtons () {
     return (
       <div>
         <div className="hw-connect__btn-wrapper">
           {this.renderConnectToLedgerButton()}
           {this.renderConnectToTrezorButton()}
+        </div>
+        <div className="hw-connect__btn-wrapper">
+          {this.renderConnectToAuthentrendButton()}
         </div>
         <Button
           type="primary"
@@ -111,10 +131,11 @@ class ConnectScreen extends Component {
     const links = {
       trezor: `<a class='hw-connect__get-hw__link' href='https://shop.trezor.io/?a=metamask' target='_blank'>Trezor</a>`,
       ledger: `<a class='hw-connect__get-hw__link' href='https://www.ledger.com/products/ledger-nano-s?r=17c4991a03fa&tracker=MY_TRACKER' target='_blank'>Ledger</a>`,
+      authentrend: `<a class='hw-connect__get-hw__link' href='https://authentrend.com/online-shop' target='_blank'>AT.Wallet</a>`,
     }
 
     const text = this.context.t('orderOneHere')
-    const response = text.replace('Trezor', links.trezor).replace('Ledger', links.ledger)
+    const response = text.replace('Trezor', links.trezor).replace('Ledger', links.ledger).replace('AuthenTrend', links.authentrend)
 
     return (
       <div
@@ -226,4 +247,3 @@ class ConnectScreen extends Component {
 }
 
 export default ConnectScreen
-

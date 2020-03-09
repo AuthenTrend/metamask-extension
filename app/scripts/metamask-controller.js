@@ -56,6 +56,7 @@ import seedPhraseVerifier from './lib/seed-phrase-verifier'
 import log from 'loglevel'
 import TrezorKeyring from 'eth-trezor-keyring'
 import LedgerBridgeKeyring from 'eth-ledger-bridge-keyring'
+import AuthentrendKeyring from 'eth-authentrend-keyring'
 import EthQuery from 'eth-query'
 import nanoid from 'nanoid'
 import contractMap from 'eth-contract-metadata'
@@ -195,7 +196,7 @@ export default class MetamaskController extends EventEmitter {
       this.accountTracker._updateAccounts()
     })
 
-    const additionalKeyrings = [TrezorKeyring, LedgerBridgeKeyring]
+    const additionalKeyrings = [TrezorKeyring, LedgerBridgeKeyring, AuthentrendKeyring]
     this.keyringController = new KeyringController({
       keyringTypes: additionalKeyrings,
       initState: initState.KeyringController,
@@ -728,6 +729,7 @@ export default class MetamaskController extends EventEmitter {
       simpleKeyPair: [],
       ledger: [],
       trezor: [],
+      authentrend: [],
     }
 
     // transactions
@@ -816,6 +818,9 @@ export default class MetamaskController extends EventEmitter {
       case 'ledger':
         keyringName = LedgerBridgeKeyring.type
         break
+      case 'authentrend':
+        keyringName = AuthentrendKeyring.type
+        break
       default:
         throw new Error('MetamaskController:getKeyringForDevice - Unknown device')
     }
@@ -897,8 +902,10 @@ export default class MetamaskController extends EventEmitter {
     this.preferencesController.setAddresses(newAccounts)
     newAccounts.forEach(address => {
       if (!oldAccounts.includes(address)) {
-        // Set the account label to Trezor 1 /  Ledger 1, etc
-        this.preferencesController.setAccountLabel(address, `${deviceName[0].toUpperCase()}${deviceName.slice(1)} ${parseInt(index, 10) + 1}`)
+        // Set the account label to Trezor 1 /  Ledger 1 / AT.Wallet 1, etc
+        let name = `${deviceName[0].toUpperCase()}${deviceName.slice(1)}`
+        if (name == 'Authentrend') name = 'AT.Wallet'
+        this.preferencesController.setAccountLabel(address, `${name} ${parseInt(index, 10) + 1}`)
         // Select the account
         this.preferencesController.setSelectedAddress(address)
       }

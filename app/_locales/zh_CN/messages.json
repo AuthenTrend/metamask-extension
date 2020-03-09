@@ -777,7 +777,7 @@
     "message": "/"
   },
   "orderOneHere": {
-    "message": "订购 Trezor 或 Ledger ，将个人资金进行冷存储"
+    "message": "订购 Trezor 或 Ledger 或 AuthenTrend，将个人资金进行冷存储"
   },
   "origin": {
     "message": "来源"

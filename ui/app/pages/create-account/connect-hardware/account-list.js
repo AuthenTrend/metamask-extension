@@ -60,7 +60,9 @@ class AccountList extends Component {
     }
 
     capitalizeDevice (device) {
-      return device.slice(0, 1).toUpperCase() + device.slice(1)
+      let name = device.slice(0, 1).toUpperCase() + device.slice(1)
+      if (name == 'Authentrend') name = 'AT.Wallet'
+      return name
     }
 
     renderHeader () {
